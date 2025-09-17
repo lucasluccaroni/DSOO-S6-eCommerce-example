@@ -6,6 +6,7 @@ namespace DSOO_S6_eCommerce_example
 {
     internal class Carrito
     {
+        
         private int id;
         private string dni;
         private List<Producto> items;

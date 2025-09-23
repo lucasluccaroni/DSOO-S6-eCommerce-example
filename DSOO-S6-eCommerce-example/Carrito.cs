@@ -17,5 +17,26 @@ namespace DSOO_S6_eCommerce_example
             this.dni = dni;
             items = new List<Producto>();
         }
+
+        public void listarItems()
+        {
+            foreach(var item in items)
+            {
+                Console.WriteLine(item);
+            }
+        }
+
+        public void agregarProducto(Producto producto)
+        {
+            items.Add(producto);
+        }
+
+        public void finalizarCompra()
+        {
+            foreach(var item in items)
+            {
+                Console.WriteLine(item);
+            }
+        }
     }
 }

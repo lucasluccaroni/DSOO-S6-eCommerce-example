@@ -31,6 +31,13 @@ namespace DSOO_S6_eCommerce_example
             items.Add(producto);
         }
 
+        // Buscar producto eb carrito
+        public Producto buscarProductoEnCarrito(Producto producto)
+        {
+            Producto productoBuscado = items.Find(p => p.Id == producto.Id);
+            return productoBuscado;
+        }
+
         public void finalizarCompra()
         {
             foreach(var item in items)

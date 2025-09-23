@@ -19,6 +19,11 @@ namespace DSOO_S6_eCommerce_example
             PrecioUnitario = precioUnitario;
             this.cantidad = cantidad;
         }
+        
+        public int Id
+        {
+            get { return this.id; }
+        }
 
         public string Nombre
         {
@@ -31,10 +36,6 @@ namespace DSOO_S6_eCommerce_example
             set { precioUnitario = value; }
         }
 
-        public override string ToString()
-        {
-            return "Producto: " + Nombre + " || cantidad: " + Cantidad + " || precio unitario: $" + PrecioUnitario;
-        }
         public int Cantidad
         {
             get { return cantidad; }
@@ -53,6 +54,11 @@ namespace DSOO_S6_eCommerce_example
         public bool consultaStock(int cantidadRequerida)
         {
             return this.Cantidad >= cantidadRequerida;
+        }
+        
+        public override string ToString()
+        {
+            return "Producto: " + Nombre + " || cantidad: " + Cantidad + " || precio unitario: $" + PrecioUnitario;
         }
     }
 }

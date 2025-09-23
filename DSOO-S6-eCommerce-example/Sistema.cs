@@ -11,12 +11,14 @@ namespace DSOO_S6_eCommerce_example
         private Carrito carrito;
         private List<Producto> productos;
 
+        // Constructor
         public Sistema(string razonSocial)
         {
             contadorIdCarrito++;
             this.razonSocial = razonSocial;
             this.productos = new List<Producto>();
         }
+
         // Iniciar compra
         public bool iniciarCompra(string dni)
         {
@@ -24,6 +26,7 @@ namespace DSOO_S6_eCommerce_example
             if (carrito == null)
             {
                 carrito = new Carrito(contadorIdCarrito, dni);
+                resultado = true;
             }
 
             return resultado;
@@ -35,7 +38,7 @@ namespace DSOO_S6_eCommerce_example
             bool resultado = false;
 
             // Chequeamos que el producto no exista para poder registrarlo
-            Producto productoARegistrar = buscarProducto(nombre);
+            Producto productoARegistrar = this.buscarProducto(nombre);
             if (productoARegistrar != null)
             {
                 Console.WriteLine("EL PRODUCTO YA SE ENCUENTRA REGISTRADO.");
@@ -97,7 +100,14 @@ namespace DSOO_S6_eCommerce_example
                 return resultado;
             }
 
-            // 4. La compra se inició, el producto existe y hay stock suficiente
+            // 4. Chequeamos si el producto ya está en el carrito
+            Producto repetido = carrito.buscarProductoEnCarrito(producto);
+            if(repetido != null)
+            {
+                repetido.Cantidad 
+            }
+
+            // 5. La compra se inició, el producto existe y hay stock suficiente y el producto no estaba previamente en el carrito
             // Agregamos el producto a la lista de carrito
             carrito.agregarProducto(producto);
             resultado = agregarOk;

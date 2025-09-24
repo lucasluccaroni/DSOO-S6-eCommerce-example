@@ -100,24 +100,46 @@ namespace DSOO_S6_eCommerce_example
                 return resultado;
             }
 
-            // 4. Chequeamos si el producto ya está en el carrito
-            Producto repetido = carrito.buscarProductoEnCarrito(producto);
-            if(repetido != null)
+            producto.Cantidad = cantidad; // Ahora el producto tiene la cantidad que el usuario quiere agregar.
+
+            // 4. Chequeamos si el producto ya forma parte de los items del carrito.
+            // Si es asi, le sumamos la cantidad nueva al producto
+            bool elProductoYaEstaEnCarrito = carrito.agregarCantidad(producto, cantidad);
+            if (elProductoYaEstaEnCarrito)
             {
-                repetido.Cantidad 
+                resultado = agregarOk;
+                return resultado;
             }
 
-            // 5. La compra se inició, el producto existe y hay stock suficiente y el producto no estaba previamente en el carrito
-            // Agregamos el producto a la lista de carrito
+            // 5. La compra se inició, el producto existe, hay stock suficiente y el producto no esta en el carrito
             carrito.agregarProducto(producto);
             resultado = agregarOk;
             return resultado;
         }
 
         // Finalizar compra
+        public bool finalizarCompra()
+        {
+            bool resultado = false;
+            if (carrito == null || carrito.Items.Count == 0)
+            {
+                return resultado;
+            }
+            foreach (var item in carrito.Items)
+            {
+                Producto productoEnStock = productos.Find(p => p.Id == item.Id);
+                if (productoEnStock != null)
+                {
+                    productoEnStock.Cantidad = productoEnStock.Cantidad - item.Cantidad;
+                }
+            }   
+            
+            carrito.finalizarCompra();
+            return this.descartarCompra();
+        }
 
-
-        //Descartar compra
+        
+        // Eliminar carrito / descartarCompra
         public bool descartarCompra()
         {
             if (carrito == null)
@@ -127,6 +149,11 @@ namespace DSOO_S6_eCommerce_example
             carrito = null;
             return true;
         }
-    }
 
+        public void listarCarrito()
+        {
+            Console.WriteLine("\n--- LISTAR CARRITO ---");
+            carrito.listarItems();
+        }
+    }
 }

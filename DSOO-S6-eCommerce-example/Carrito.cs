@@ -18,6 +18,11 @@ namespace DSOO_S6_eCommerce_example
             items = new List<Producto>();
         }
 
+        public List<Producto> Items
+        {
+            get { return this.items; }
+        }
+
         public void listarItems()
         {
             foreach(var item in items)
@@ -29,21 +34,33 @@ namespace DSOO_S6_eCommerce_example
         public void agregarProducto(Producto producto)
         {
             items.Add(producto);
+            Console.WriteLine(producto);
         }
 
-        // Buscar producto eb carrito
-        public Producto buscarProductoEnCarrito(Producto producto)
+        // Buscar producto en carrito
+        public bool agregarCantidad(Producto producto, int cantidad)
         {
+            bool resultado = false;
             Producto productoBuscado = items.Find(p => p.Id == producto.Id);
-            return productoBuscado;
+            if(productoBuscado != null)
+            {
+                Console.WriteLine("Producto encontrado en carrito!!! se le suman " + cantidad + " unidades.");
+                productoBuscado.Cantidad += cantidad;
+                resultado = true;
+            }
+            return resultado;
         }
 
         public void finalizarCompra()
         {
+            double montoTotal = 0;
+            this.listarItems();
             foreach(var item in items)
             {
-                Console.WriteLine(item);
+
+                montoTotal = montoTotal + (item.PrecioUnitario * item.Cantidad);
             }
+            Console.WriteLine("El monto total a pagar es: $" + montoTotal);
         }
     }
 }

@@ -28,7 +28,6 @@ namespace DSOO_S6_eCommerce_example
                 carrito = new Carrito(contadorIdCarrito, dni);
                 resultado = true;
             }
-
             return resultado;
         }
 
@@ -55,17 +54,24 @@ namespace DSOO_S6_eCommerce_example
                 Console.WriteLine("PRODUCTO REGISTRADO CORRECTAMENTE.");
                 return resultado;
             }
-
             Console.WriteLine("EL STOCK INGRESADO ES NEGATIVO.");
             return resultado;
         }
-
 
         // Buscar producto
         public Producto buscarProducto(string nombre)
         {
             Producto productoBuscado = productos.Find(p => p.Nombre == nombre);
             return productoBuscado;
+        }
+
+        // Listar productos
+        public void listarProductos()
+        {
+            foreach (var producto in productos)
+            {
+                Console.WriteLine(producto);
+            }
         }
 
         // Agregar un producto al carrito
@@ -76,7 +82,8 @@ namespace DSOO_S6_eCommerce_example
             string productoInvalido = "PRODUCTO_INVÁLIDO";
             string noHayStock = "NO_HAY_STOCK";
             string agregarOk = "AGREGAR_OK.";
-            Producto producto;
+            Producto productoEnSistema;
+            Producto productoParaCarrito;
 
             // 1. Chequeamos que la compra se haya iniciado (osea, que exista un carrito)
             if(carrito == null)
@@ -86,25 +93,29 @@ namespace DSOO_S6_eCommerce_example
             }
 
             // 2. Chequeamos que el producto exista
-            producto = buscarProducto(nombreProducto);
-            if(producto == null)
+            productoEnSistema = buscarProducto(nombreProducto);
+            if(productoEnSistema == null)
             {
                 resultado = productoInvalido;
                 return resultado;
             }
 
             // 3. Chequeamos que el producto tenga stock
-            if (!producto.consultaStock(cantidad))
+            if (!productoEnSistema.consultaStock(cantidad))
             {
                 resultado = noHayStock;
                 return resultado;
             }
 
-            producto.Cantidad = cantidad; // Ahora el producto tiene la cantidad que el usuario quiere agregar.
-
+            // Creamos una instancia del producto que va a ir en el carrito
+            productoParaCarrito = new Producto(productoEnSistema.Id,
+                productoEnSistema.Nombre,
+                productoEnSistema.PrecioUnitario,
+                cantidad);
+            
             // 4. Chequeamos si el producto ya forma parte de los items del carrito.
             // Si es asi, le sumamos la cantidad nueva al producto
-            bool elProductoYaEstaEnCarrito = carrito.agregarCantidad(producto, cantidad);
+            bool elProductoYaEstaEnCarrito = carrito.agregarCantidad(productoParaCarrito, cantidad);
             if (elProductoYaEstaEnCarrito)
             {
                 resultado = agregarOk;
@@ -112,7 +123,7 @@ namespace DSOO_S6_eCommerce_example
             }
 
             // 5. La compra se inició, el producto existe, hay stock suficiente y el producto no esta en el carrito
-            carrito.agregarProducto(producto);
+            carrito.agregarProducto(productoParaCarrito);
             resultado = agregarOk;
             return resultado;
         }
@@ -127,15 +138,12 @@ namespace DSOO_S6_eCommerce_example
             }
             foreach (var item in carrito.Items)
             {
-                Console.WriteLine("DENTRO DE FINALIZAR COMPRA");
-                Console.WriteLine(item);
-                /*Producto productoEnStock = productos.Find(p => p.Id == item.Id);
+                Producto productoEnStock = productos.Find(p => p.Id == item.Id);
                 if (productoEnStock != null)
                 {
                     productoEnStock.Cantidad = productoEnStock.Cantidad - item.Cantidad;
-                }*/
+                }
             }   
-            
             carrito.finalizarCompra();
             return this.descartarCompra();
         }

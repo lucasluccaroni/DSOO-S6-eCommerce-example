@@ -6,7 +6,6 @@ namespace DSOO_S6_eCommerce_example
 {
     internal class Carrito
     {
-        
         private int id;
         private string dni;
         private List<Producto> items;
@@ -44,7 +43,6 @@ namespace DSOO_S6_eCommerce_example
             Producto productoBuscado = items.Find(p => p.Id == producto.Id);
             if(productoBuscado != null)
             {
-                Console.WriteLine("Producto encontrado en carrito!!! se le suman " + cantidad + " unidades.");
                 productoBuscado.Cantidad += cantidad;
                 resultado = true;
             }

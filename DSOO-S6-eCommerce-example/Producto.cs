@@ -19,6 +19,14 @@ namespace DSOO_S6_eCommerce_example
             PrecioUnitario = precioUnitario;
             this.cantidad = cantidad;
         }
+
+        public Producto(int id, string nombre, double precioUnitario, int cantidad)
+        {
+            this.id = id;
+            this.nombre = nombre;
+            this.PrecioUnitario = precioUnitario;
+            this.Cantidad = cantidad;
+        }
         
         public int Id
         {

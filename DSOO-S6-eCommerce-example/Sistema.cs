@@ -127,11 +127,13 @@ namespace DSOO_S6_eCommerce_example
             }
             foreach (var item in carrito.Items)
             {
-                Producto productoEnStock = productos.Find(p => p.Id == item.Id);
+                Console.WriteLine("DENTRO DE FINALIZAR COMPRA");
+                Console.WriteLine(item);
+                /*Producto productoEnStock = productos.Find(p => p.Id == item.Id);
                 if (productoEnStock != null)
                 {
                     productoEnStock.Cantidad = productoEnStock.Cantidad - item.Cantidad;
-                }
+                }*/
             }   
             
             carrito.finalizarCompra();
